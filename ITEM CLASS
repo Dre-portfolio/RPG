@@ -1,1 +1,41 @@
+// Item Class
+abstract class Item {
+    protected String name;
+    protected ItemType type;
+    
+    public abstract void use(Character character);
+}
 
+class Weapon extends Item {
+    private int atkBonus;
+    
+    public Weapon(String name, int atkBonus) {
+        this.name = name;
+        this.atkBonus = atkBonus;
+        this.type = ItemType.WEAPON;
+    }
+    
+    @Override
+    public void use(Character character) {
+        character.ap += atkBonus;
+    }
+}
+
+class Armor extends Item {
+    private int defBonus;
+    
+    public Armor(String name, int defBonus) {
+        this.name = name;
+        this.defBonus = defBonus;
+        this.type = ItemType.ARMOR;
+    }
+    
+    @Override
+    public void use(Character character) {
+        character.dp += defBonus;
+    }
+}
+
+enum ItemType {
+    WEAPON, ARMOR, ACCESSORY, CONSUMABLE, THROWABLE
+}
