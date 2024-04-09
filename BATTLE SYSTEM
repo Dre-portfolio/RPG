@@ -1,1 +1,58 @@
-
+// Battle System
+class Battle {
+    private Character player;
+    private Character enemy;
+    
+    public Battle(Character player, Character enemy) {
+        this.player = player;
+        this.enemy = enemy;
+    }
+    
+    public void startBattle() {
+        while (player.hp > 0 && enemy.hp > 0) {
+            if (player.spd >= enemy.spd) {
+                playerTurn();
+                if (enemy.hp > 0) {
+                    enemyTurn();
+                }
+            } else {
+                enemyTurn();
+                if (player.hp > 0) {
+                    playerTurn();
+                }
+            }
+        }
+        
+        if (player.hp <= 0) {
+            System.out.println("You lost the battle!");
+        } else {
+            System.out.println("You won the battle!");
+        }
+    }
+    
+    private void playerTurn() {
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("Choose an action: (1) Attack, (2) Defend, (3) Use Item");
+        int choice = scanner.nextInt();
+        
+        switch (choice) {
+            case 1:
+                player.attack(enemy);
+                break;
+            case 2:
+                player.defend();
+                break;
+            case 3:
+                System.out.println("Select an item to use:");
+                // Display player's inventory and allow them to choose an item
+                break;
+            default:
+                System.out.println("Invalid choice!");
+        }
+    }
+    
+    private void enemyTurn() {
+        // Enemy AI chooses action
+        enemy.attack(player);
+    }
+}
