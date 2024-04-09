@@ -1,1 +1,83 @@
+// Character Class
+abstract class Character {
+    protected String name;
+    protected int hp, maxHp;
+    protected int ap, dp;
+    protected int vit, spd, phyAtk, magPow;
+    protected CharacterClass charClass;
+    
+    public Character(String name, int vit, int spd, int phyAtk, int magPow) {
+        this.name = name;
+        this.vit = vit;
+        this.spd = spd;
+        this.phyAtk = phyAtk;
+        this.magPow = magPow;
+        calculateCharacterClass();
+        calculateStats();
+    }
+    
+    private void calculateCharacterClass() {
+        int totalStats = vit + spd + phyAtk + magPow;
+        double vitPercent = (double) vit / totalStats;
+        double spdPercent = (double) spd / totalStats;
+        double phyAtkPercent = (double) phyAtk / totalStats;
+        double magPowPercent = (double) magPow / totalStats;
+        
+        if (vitPercent == 0.25 && spdPercent == 0.25 && phyAtkPercent == 0.25 && magPowPercent == 0.25) {
+            charClass = CharacterClass.SAVANT;
+        } else if (vitPercent >= 0.75) {
+            charClass = CharacterClass.WARDEN;
+        } else if (vitPercent >= 0.5 && phyAtkPercent >= 0.5) {
+            charClass = CharacterClass.KNIGHT;
+        } else if (vitPercent >= 0.5 && magPowPercent >= 0.5) {
+            charClass = CharacterClass.PALADIN;
+        } else if (spdPercent >= 0.75) {
+            charClass = CharacterClass.SONIC;
+        } else if (spdPercent >= 0.5 && vitPercent >= 0.5) {
+            charClass = CharacterClass.VIGOR;
+        } else if (spdPercent >= 0.5 && phyAtkPercent >= 0.5) {
+            charClass = CharacterClass.BERSERKER;
+        } else if (spdPercent >= 0.5 && magPowPercent >= 0.5) {
+            charClass = CharacterClass.WARLOCK;
+        } else if (phyAtkPercent >= 0.75) {
+            charClass = CharacterClass.WARRIOR;
+        } else if (magPowPercent >= 0.75) {
+            charClass = CharacterClass.MAGE;
+        } else if (phyAtkPercent >= 0.5 && magPowPercent >= 0.5) {
+            charClass = CharacterClass.ENIGMA;
+        }
+    }
+    
+    private void calculateStats() {
+        int levelUpStats = 4 * getLevel();
+        maxHp = vit * 10 + levelUpStats;
+        hp = maxHp;
+        ap = phyAtk * 2 + levelUpStats;
+        dp = vit + levelUpStats;
+    }
+    
+    public int getLevel() {
+        // Calculate character level based on total stats
+        return 1;
+    }
+    
+    public void attack(Character target) {
+        int damage = ap - target.dp;
+        if (damage < 0) {
+            damage = 0;
+        }
+        target.hp -= damage;
+    }
+    
+    public void defend() {
+        dp += 2;
+    }
+    
+    public void useItem(Item item) {
+        item.use(this);
+    }
+}
 
+enum CharacterClass {
+    SAVANT, WARDEN, KNIGHT, PALADIN, SONIC, VIGOR, BERSERKER, WARLOCK, WARRIOR, MAGE, ENIGMA
+}
