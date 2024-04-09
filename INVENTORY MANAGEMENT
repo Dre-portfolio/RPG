@@ -1,1 +1,45 @@
-
+// Inventory Management
+class Inventory {
+    private int gold;
+    private List<Item> items;
+    
+    public Inventory() {
+        gold = 0;
+        items = new ArrayList<>();
+    }
+    
+    public void addGold(int amount) {
+        gold += amount;
+    }
+    
+    public void addItem(Item item) {
+        items.add(item);
+    }
+    
+    public void removeItem(Item item) {
+        items.remove(item);
+    }
+    
+    public void equipItem(Character character, Item item) {
+        // Equip the item to the character
+        if (item instanceof Weapon) {
+            character.useItem(item);
+        } else if (item instanceof Armor) {
+            character.useItem(item);
+        }
+    }
+    
+    public void unequipItem(Character character, Item item) {
+        // Unequip the item from the character
+        if (item instanceof Weapon) {
+            character.ap -= ((Weapon) item).atkBonus;
+        } else if (item instanceof Armor) {
+            character.dp -= ((Armor) item).defBonus;
+        }
+    }
+    
+    public void sellItem(Item item) {
+        removeItem(item);
+        addGold(item.getSellPrice());
+    }
+}
